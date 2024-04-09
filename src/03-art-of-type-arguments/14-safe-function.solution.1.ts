@@ -2,9 +2,11 @@ import { expect, it } from "vitest";
 import { Equal, Expect } from "../helpers/type-utils";
 
 const makeSafe =
-  <TParams extends any[], TReturn>(func: (...args: TParams) => TReturn) =>
+  <TParams extends any[], TReturn>(
+    func: (...args: TParams) => TReturn // TParams是由入参组成的named tuple，如传入a:string, b:number，则TParams就是[a: string, b: number]
+  ) =>
   (
-    ...args: TParams
+    ...args: TParams // TParams代表的元组会被拆解，所以这里恢复到了接收: a: string, b: number
   ):
     | {
         type: "success";
@@ -52,7 +54,7 @@ it("Should return the result on a successful call", () => {
             error: Error;
           }
       >
-    >,
+    >
   ];
 });
 
@@ -84,7 +86,7 @@ it("Should return the error on a thrown call", () => {
             error: Error;
           }
       >
-    >,
+    >
   ];
 });
 

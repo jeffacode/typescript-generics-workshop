@@ -2,9 +2,8 @@ import { Equal, Expect } from "../helpers/type-utils";
 
 export const makeSelectors = <
   TSource,
-  TSelectors extends Record<string, (source: TSource) => any>,
 >(
-  selectors: TSelectors,
+  selectors: Record<string, (source: TSource) => any>, // 这样的话，selectors的类型就确定是Record<...>了，无法知道内部具体的类型
 ) => {
   return selectors;
 };

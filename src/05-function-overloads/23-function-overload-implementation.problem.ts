@@ -13,9 +13,14 @@ interface AdminPrivileges extends UserPrivileges {
   sitesCanDelete: string[];
 }
 
+// 下面3个是类型定义，当role是admin或user时会被前2个捕获，当role是其他时会被第3个捕获
 function getRolePrivileges(role: "admin"): AdminPrivileges;
 function getRolePrivileges(role: "user"): UserPrivileges;
-function getRolePrivileges(role: string): AnonymousPrivileges {
+function getRolePrivileges(role: unknown): AnonymousPrivileges;
+// 这个是函数实现
+function getRolePrivileges(
+  role: unknown
+): AdminPrivileges | UserPrivileges | AnonymousPrivileges {
   switch (role) {
     case "admin":
       return {
@@ -44,6 +49,6 @@ it("Should return the correct privileges", () => {
   type tests = [
     Expect<Equal<typeof adminPrivileges, AdminPrivileges>>,
     Expect<Equal<typeof userPrivileges, UserPrivileges>>,
-    Expect<Equal<typeof anonymousPrivileges, AnonymousPrivileges>>,
+    Expect<Equal<typeof anonymousPrivileges, AnonymousPrivileges>>
   ];
 });

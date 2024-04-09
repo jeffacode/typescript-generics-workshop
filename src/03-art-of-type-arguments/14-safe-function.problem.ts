@@ -2,13 +2,13 @@ import { expect, it } from "vitest";
 import { Equal, Expect } from "../helpers/type-utils";
 
 const makeSafe =
-  (func: unknown) =>
+  <TParam, TReturn>(func: (...args: TParam[]) => TReturn) => // TParam是所有入参类型的union，如传入a:string, b:number，则TParam就是 string | number
   (
-    ...args: unknown
+    ...args: TParam[] // 所有入参都是union类型，所以这里接收的是：a: string | number, b: string | number
   ):
     | {
         type: "success";
-        result: unknown;
+        result: TReturn;
       }
     | {
         type: "failure";
@@ -52,7 +52,7 @@ it("Should return the result with a { type: 'success' } on a successful call", (
             error: Error;
           }
       >
-    >,
+    >
   ];
 });
 
@@ -84,7 +84,7 @@ it("Should return the error on a thrown call", () => {
             error: Error;
           }
       >
-    >,
+    >
   ];
 });
 
