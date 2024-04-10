@@ -1,11 +1,12 @@
 import { expect, it } from "vitest";
 import { Equal, Expect } from "../helpers/type-utils";
 
-const pick = (obj: {}, picked: string[]) => {
+// TKey是泛型，它是union类型中的其中一个
+const pick = <TObj, TKey extends keyof TObj>(obj: TObj, picked: TKey[]) => {
   return picked.reduce((acc, key) => {
     acc[key] = obj[key];
     return acc;
-  }, {});
+  }, {} as Record<TKey, TObj[TKey]>);
 };
 
 it("Should pick the keys from the object", () => {

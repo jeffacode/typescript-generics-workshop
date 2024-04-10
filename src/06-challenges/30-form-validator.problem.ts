@@ -1,23 +1,27 @@
 import { expect, it } from "vitest";
 import { Equal, Expect } from "../helpers/type-utils";
 
-const makeFormValidatorFactory = (validators: unknown) => (config: unknown) => {
-  return (values: unknown) => {
-    const errors = {} as any;
+const makeFormValidatorFactory =
+  <TValidatorKey extends string>(
+    validators: Record<TValidatorKey, (value: string) => string | void>
+  ) =>
+  <TConfigKey extends string>(config: Record<TConfigKey, TValidatorKey[]>) => {
+    return (values: Record<TConfigKey, string>) => {
+      const errors = {} as Record<TConfigKey, string | undefined>;
 
-    for (const key in config) {
-      for (const validator of config[key]) {
-        const error = validators[validator](values[key]);
-        if (error) {
-          errors[key] = error;
-          break;
+      for (const key in config) {
+        for (const validator of config[key]) {
+          const error = validators[validator](values[key]);
+          if (error) {
+            errors[key] = error;
+            break;
+          }
         }
       }
-    }
 
-    return errors;
+      return errors;
+    };
   };
-};
 
 const createFormValidator = makeFormValidatorFactory({
   required: (value) => {

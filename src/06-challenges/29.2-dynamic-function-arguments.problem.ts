@@ -8,7 +8,10 @@ interface Events {
   focus: undefined;
 }
 
-export const sendEvent = (event: keyof Events, ...args: any[]) => {
+export const sendEvent = <EventType extends keyof Events>(
+  event: EventType,
+  ...args: Events[EventType] extends undefined ? [] : [Events[EventType]] // args的类型不是数组而是元组，元组长度代表参数个数，0就代表没有参数
+) => {
   // Send the event somewhere!
 };
 
