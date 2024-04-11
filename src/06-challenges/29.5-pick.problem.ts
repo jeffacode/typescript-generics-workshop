@@ -1,7 +1,8 @@
 import { expect, it } from "vitest";
 import { Equal, Expect } from "../helpers/type-utils";
 
-// TKey是泛型，它是union类型中的其中一个
+// TKey是泛型，这样ts就能根据picked的值来推断它具体是union中的哪几个了；
+// 如果直接picked: keyof TObj，那么它的类型就确定是union了
 const pick = <TObj, TKey extends keyof TObj>(obj: TObj, picked: TKey[]) => {
   return picked.reduce((acc, key) => {
     acc[key] = obj[key];

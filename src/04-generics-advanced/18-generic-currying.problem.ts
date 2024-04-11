@@ -3,7 +3,7 @@ import { Equal, Expect } from "../helpers/type-utils";
 
 export const curryFunction =
   <T, U, V>(t: T) =>
-  (u: U) =>
+  (u: U) => // 上一级的泛型不能被用作下一级的入参
   (v: V) => {
     return {
       t,

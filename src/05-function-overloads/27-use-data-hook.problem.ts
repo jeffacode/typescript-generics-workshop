@@ -3,10 +3,10 @@ import { Equal, Expect } from "../helpers/type-utils";
 
 // You'll need to use function overloads to figure this out!
 function useData<T>(params: { fetchData: () => Promise<T> }): {
-  getData: () => T | undefined;
+  getData: () => T | undefined; // 不传initialData，则getData返回值可为undefined
 };
 function useData<T>(params: { fetchData: () => Promise<T>; initialData: T }): {
-  getData: () => T;
+  getData: () => T; // 传initialData，则getData必定有返回值
 };
 function useData(params: {
   fetchData: () => Promise<unknown>;
